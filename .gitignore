@@ -1,0 +1,15 @@
+# Visual Studio temporary files and folders
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.log
+*.cache
+*.pdb
+*.dll
+*.exe
+
+# Other unnecessary files
+.DS_Store
+Thumbs.db
