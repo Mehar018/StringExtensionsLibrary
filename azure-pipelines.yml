@@ -1,10 +1,9 @@
 trigger:
   - main
 
-pool:
-  name: 'Default'
-  demands:
-    - Agent.Name -equals self-hosted
+ pool:
+  vmImage: 'windows-latest'
+
 
 steps:
   - task: UseDotNet@2
