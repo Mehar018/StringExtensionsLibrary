@@ -4,12 +4,10 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-
 steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '8.0.x'
+  - script: echo "Pipeline is running successfully!"
+    displayName: 'Print a message'
+
 
   - script: dotnet build
     displayName: 'Build the Project'
