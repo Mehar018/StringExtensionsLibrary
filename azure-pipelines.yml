@@ -1,0 +1,32 @@
+trigger:
+  - main
+
+pool:
+  name: 'Default'
+  demands:
+    - Agent.Name -equals self-hosted
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '8.0.x'
+
+  - script: dotnet build
+    displayName: 'Build the Project'
+
+  - script: |
+      dotnet pack --output $(Build.ArtifactStagingDirectory)
+    displayName: 'Pack NuGet Package'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'drop'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: '<2befd32d-3805-441b-bcb3-47a26d4e7180>'
