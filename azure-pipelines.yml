@@ -1,29 +1,26 @@
 trigger:
-  - main
+  branches:
+    include:
+      - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: Default
 
 steps:
-  - script: echo "Pipeline is running successfully!"
-    displayName: 'Print a message'
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
 
+- script: dotnet restore
+  displayName: 'Restore Dependencies'
 
-  - script: dotnet build
-    displayName: 'Build the Project'
+- script: dotnet build --configuration Release
+  displayName: 'Build Project'
 
-  - script: |
-      dotnet pack --output $(Build.ArtifactStagingDirectory)
-    displayName: 'Pack NuGet Package'
+- script: dotnet pack --configuration Release -o $(Build.ArtifactStagingDirectory)
+  displayName: 'Pack NuGet Package'
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifact: 'drop'
-
-  - task: NuGetCommand@2
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-      nuGetFeedType: 'internal'
-      publishVstsFeed: '<2befd32d-3805-441b-bcb3-47a26d4e7180>'
+- task: PublishPipelineArtifact@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
