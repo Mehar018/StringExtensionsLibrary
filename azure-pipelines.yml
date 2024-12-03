@@ -21,6 +21,9 @@ steps:
 - script: dotnet pack --configuration Release -o $(Build.ArtifactStagingDirectory)
   displayName: 'Pack NuGet Package'
 
-- task: PublishPipelineArtifact@1
+- task: NuGetCommand@2
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    command: push
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    publishVstsFeed: 'StringExtensionsFeed'  # Replace with your feed name
+
