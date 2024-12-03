@@ -23,7 +23,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    command: push
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    publishVstsFeed: 'StringExtensionsFeed'  # Replace with your feed name
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+   publishVstsFeed: 'MyNuGetFeed'
 
